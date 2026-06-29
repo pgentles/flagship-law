@@ -5,7 +5,7 @@ import { ALL_VIOLATIONS } from './data/statutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3002;
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 app.use(cors());
 app.use(express.json({ limit: '256kb' }));
