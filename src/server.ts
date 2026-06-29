@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json({ limit: '256kb' }));
 
 // ─── X402 Middleware (x402 v2 spec compliant) ──────────────────────
-const FREE_PATHS = ['/', '/health', '/openapi.json', '/favicon.ico', '/api/violations', '/api/stats', '/api/regulations', '/api/categories'];
+const FREE_PATHS = ['/', '/health', '/openapi.json', '/favicon.ico', '/api/violations', '/api/stats', '/api/regulations', '/api/categories', '/api/sales'];
 const USDC_BASE_MAINNET = '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA';
 const BASE_NETWORK_CAIP2 = 'eip155:8453';
 
@@ -203,6 +203,15 @@ app.post('/api/analyze', (req: Request, res: Response) => {
     ...result,
     state: state || 'general',
     disclaimer: 'This analysis is informational only and does not constitute legal advice. Consult a licensed attorney for formal legal guidance.',
+  });
+});
+
+// ─── API: Sales (Free) ──────────────────────────────────────────────
+app.get('/api/sales', (_req: Request, res: Response) => {
+  res.json({
+    total: 0,
+    revenue_usdc: "0.00",
+    recent: []
   });
 });
 
