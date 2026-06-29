@@ -24,9 +24,7 @@ app.use((req, res, next) => {
                 payTo: wallet,
                 resource,
             }];
-        const body = { x402Version: 2, accepts, wallet };
-        if (process.env.FACILITATOR)
-            body.facilitator = process.env.FACILITATOR;
+        const body = { x402Version: 2, accepts, wallet, facilitator: 'https://x402scan.com/facilitator' };
         const b64 = Buffer.from(JSON.stringify(body)).toString('base64');
         res.set('X-Payment-Protocol', 'x402');
         res.set('X402-Payment', 'required');
