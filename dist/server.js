@@ -8,7 +8,7 @@ const VERSION = '1.0.0';
 app.use(cors());
 app.use(express.json({ limit: '256kb' }));
 // ─── X402 Middleware (x402 v2 spec compliant) ──────────────────────
-const FREE_PATHS = ['/', '/health', '/openapi.json', '/favicon.ico', '/api/violations', '/api/stats'];
+const FREE_PATHS = ['/', '/health', '/openapi.json', '/favicon.ico', '/api/violations', '/api/stats', '/api/regulations', '/api/categories'];
 const USDC_BASE_MAINNET = '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA';
 const BASE_NETWORK_CAIP2 = 'eip155:8453';
 app.use((req, res, next) => {
@@ -220,6 +220,32 @@ app.get('/api/stats', (_req, res) => {
     res.json({
         totalQueries: queryLog.length,
         recentQueries: queryLog.slice(-50).reverse(),
+    });
+});
+// ─── API: Regulations (Free) ───────────────────────────────────────
+app.get('/api/regulations', (_req, res) => {
+    res.json({
+        regulations: [
+            { id: 'fdcpa', name: 'Fair Debt Collection Practices Act', statute: '15 U.S.C. §1692', agency: 'CFPB' },
+            { id: 'fcra', name: 'Fair Credit Reporting Act', statute: '15 U.S.C. §1681', agency: 'CFPB/FTC' },
+            { id: 'crosa', name: 'Credit Repair Organizations Act', statute: '15 U.S.C. §1678', agency: 'FTC' },
+            { id: 'tcpa', name: 'Telephone Consumer Protection Act', statute: '47 U.S.C. §227', agency: 'FCC' },
+            { id: 'fdcpa-fl', name: 'Florida Consumer Collection Practices Act', statute: 'Fla. Stat. §559.55', agency: 'FL Dept of Financial Services' },
+        ],
+    });
+});
+// ─── API: Categories (Free) ────────────────────────────────────────
+app.get('/api/categories', (_req, res) => {
+    res.json({
+        categories: [
+            { id: 'harassment', name: 'Harassment/Abuse', statute: 'FDCPA §806' },
+            { id: 'misrepresentation', name: 'Misrepresentation', statute: 'FDCPA §807' },
+            { id: 'unfair-practices', name: 'Unfair Practices', statute: 'FDCPA §808' },
+            { id: 'validation', name: 'Validation Notice', statute: 'FDCPA §809' },
+            { id: 'reporting', name: 'Credit Reporting', statute: 'FCRA §602-629' },
+            { id: 'privacy', name: 'Privacy Violations', statute: 'GLBA/CCPA' },
+            { id: 'robo-call', name: 'Robocalls/Auto-dialer', statute: 'TCPA §227' },
+        ],
     });
 });
 // ─── Static Files ───────────────────────────────────────────────────
