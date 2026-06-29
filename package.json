@@ -1,0 +1,21 @@
+{
+  "name": "flagship-law",
+  "version": "1.0.0",
+  "description": "FDCPA/FCRA violation analysis API for AI agents (X402 payment protocol)",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsc && node dist/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "typescript": "^5.7.0"
+  }
+}
