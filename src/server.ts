@@ -10,8 +10,10 @@ const VERSION = '1.0.0';
 app.use(cors());
 app.use(express.json({ limit: '256kb' }));
 
-// ─── X402 Middleware (EXACT working format from Kronos X402) ────────
+// ─── X402 Middleware (x402 v2 spec compliant) ──────────────────────
 const FREE_PATHS = ['/', '/health', '/openapi.json', '/favicon.ico', '/api/violations', '/api/stats'];
+const USDC_BASE_MAINNET = '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA';
+const BASE_NETWORK_CAIP2 = 'eip155:8453';
 
 app.use((req: Request, res: Response, next: any) => {
   if (FREE_PATHS.includes(req.path)) return next();
@@ -19,14 +21,22 @@ app.use((req: Request, res: Response, next: any) => {
   const payment = req.headers['x402-payment'];
   if (!payment) {
     const wallet = process.env.WALLET_ADDRESS || '0x421C25445d6CF7B292933D743E698ed24dE36270';
-    const resource = `https://${req.headers.host}${req.path}`;
+    const resourceUrl = `https://${req.headers.host}${req.path}`;
     const accepts = [{
-      network: 'base',
-      asset: 'USDC',
-      amount: '0.05',
       scheme: 'exact',
+      network: BASE_NETWORK_CAIP2,
+      amount: '50000',
+      asset: USDC_BASE_MAINNET,
       payTo: wallet,
-      resource,
+      maxTimeoutSeconds: 60,
+      resource: {
+        url: resourceUrl,
+        description: 'FDCPA/FCRA legal violation analysis',
+        mimeType: 'application/json',
+        serviceName: 'Flagship Law',
+        tags: ['legal', 'fdcpa', 'fcra', 'debt-collection'],
+      },
+      extra: { name: 'USDC', version: '2' },
     }];
     const body = { x402Version: 2, accepts, wallet, facilitator: 'https://x402scan.com/facilitator' };
     const b64 = Buffer.from(JSON.stringify(body)).toString('base64');
