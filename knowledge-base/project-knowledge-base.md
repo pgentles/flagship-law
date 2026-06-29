@@ -1,9 +1,9 @@
-# Kronos Legal — Project Knowledge Base
+# Flagship Law — Project Knowledge Base
 
-> **Last Updated:** 2026-06-28
-> **Status:** Live on Render ✅ — x402scan registration needed
-> **Repo:** https://github.com/pgentles/kronos-legal
-> **Live URL:** https://kronos-legal.onrender.com
+> **Last Updated:** 2026-06-29
+> **Status:** Live on Render ✅ — x402scan ✅ Registered
+> **Repo:** https://github.com/pgentles/flagship-law
+> **Live URL:** https://flagship-law.onrender.com
 
 ---
 
