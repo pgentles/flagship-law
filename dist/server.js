@@ -18,7 +18,26 @@ app.use((req, res, next) => {
     if (!payment) {
         const wallet = process.env.WALLET_ADDRESS || '0x421C25445d6CF7B292933D743E698ed24dE36270';
         const resourceUrl = `https://${req.headers.host}${req.path}`;
-        const accepts = [{
+        // Per x402 spec: provide TWO network requirements — "base" first, then "eip155:8453"
+        // Both with same asset, payTo, amount, resource, scheme: "exact"
+        const accepts = [
+            {
+                scheme: 'exact',
+                network: 'base',
+                amount: '50000',
+                asset: USDC_BASE_MAINNET,
+                payTo: wallet,
+                maxTimeoutSeconds: 60,
+                resource: {
+                    url: resourceUrl,
+                    description: 'FDCPA/FCRA legal violation analysis',
+                    mimeType: 'application/json',
+                    serviceName: 'Flagship Law',
+                    tags: ['legal', 'fdcpa', 'fcra', 'debt-collection'],
+                },
+                extra: { name: 'USDC', version: '2' },
+            },
+            {
                 scheme: 'exact',
                 network: BASE_NETWORK_CAIP2,
                 amount: '50000',
@@ -33,7 +52,8 @@ app.use((req, res, next) => {
                     tags: ['legal', 'fdcpa', 'fcra', 'debt-collection'],
                 },
                 extra: { name: 'USDC', version: '2' },
-            }];
+            }
+        ];
         const body = { x402Version: 2, accepts, wallet, facilitator: 'https://x402scan.com/facilitator' };
         const b64 = Buffer.from(JSON.stringify(body)).toString('base64');
         res.set('X-Payment-Protocol', 'x402');
